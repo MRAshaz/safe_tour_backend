@@ -4,7 +4,7 @@ from flask_cors import CORS  # pyright: ignore[reportMissingModuleSource]
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
 
 latest_location = {"latitude": None, "longitude": None}
 
