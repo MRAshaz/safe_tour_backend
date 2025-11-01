@@ -5,9 +5,10 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, async_mode='threading', cors_allowed_origins="*")
+socketio = SocketIO(app, async_mode="threading", cors_allowed_origins="*")
 
 latest_location = {"latitude": None, "longitude": None}
+
 
 @app.route("/update_location", methods=["POST"])
 def update_location():
@@ -20,16 +21,19 @@ def update_location():
     socketio.emit("location_update", latest_location)
     return jsonify({"status": "success"})
 
+
 @socketio.on("connect")
 def handle_connect():
     print("Client connected")
     # Send current latest location immediately
     emit("location_update", latest_location)
 
+
 @socketio.on("disconnect")
 def handle_disconnect():
     print("Client disconnected")
 
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # use Render’s assigned port
-    socketio.run(app, host='0.0.0.0', port=port)
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port, allow_unsafe_werkzeug=True)
