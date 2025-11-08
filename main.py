@@ -24,7 +24,7 @@ def update_location():
 
 @app.route("/sos", methods=["POST"])
 def sos_alert():
-    data = request.json()
+    data = request.json
     socketio.emit("sos_alert", data)
     return jsonify({"status": "SOS received"})
 
