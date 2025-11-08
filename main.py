@@ -22,6 +22,29 @@ def update_location():
     return jsonify({"status": "success"})
 
 
+@app.route("/sos", methods=["POST"])
+def sos_alert():
+    data = request.json()
+    socketio.emit("sos_alert", data)
+    return jsonify({"status": "SOS received"})
+
+
+@app.route("/report_incident", methods=["POST"])
+def report_incident():
+    data = request.json
+
+    incident = {
+        "type": data.get("type"),
+        "details": data.get("details"),
+        "latitude": data.get("latitude"),
+        "longitude": data.get("longitude"),
+        "timestamp": data.get("timestamp"),
+    }
+
+    socketio.emit("new_incident", incident)  # notify authorities in real-time
+    return jsonify({"status": "incident received"})
+
+
 @socketio.on("connect")
 def handle_connect():
     print("Client connected")
