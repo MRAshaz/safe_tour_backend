@@ -41,7 +41,7 @@ def report_incident():
         "timestamp": data.get("timestamp"),
     }
 
-    socketio.emit("new_incident", incident)  # notify authorities in real-time
+    socketio.emit("incident_reported", incident)  # notify authorities in real-time
     return jsonify({"status": "incident received"})
 
 
